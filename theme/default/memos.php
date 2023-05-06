@@ -6,6 +6,8 @@
  * @link https://github.com/fengqi/typecho-memos
  */
 
+use Utils\Markdown;
+
 $options = Typecho_Widget::widget('Widget_Options');
 $page_size = intval($options->plugin('Memos')->page_size);
 $open_api = $options->plugin('Memos')->open_api;
@@ -58,6 +60,16 @@ function pickTag($content)
     return [];
 }
 
+function markdown($content)
+{
+    $tags = pickTag($content);
+    foreach ($tags as $tag) {
+        $content = str_replace("#$tag", "[$tag](?tag=$tag)", $content);
+    }
+
+    return Markdown::convert($content);;
+}
+
 ?>
 
 <?php $this->need('header.php'); ?>
@@ -80,7 +92,7 @@ function pickTag($content)
         </ul>
 
         <div class="post-content" itemprop="articleBody">
-            <?php echo $item->content ?>
+            <?php echo markdown($item->content) ?>
         </div>
     </article>
     <?php endforeach; ?>
