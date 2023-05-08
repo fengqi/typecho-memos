@@ -28,7 +28,7 @@ class Plugin implements PluginInterface
      */
     public static function activate()
     {
-        // todo
+        \Typecho_Plugin::factory('Widget_Archive')->header = array(Plugin::class, 'header');
     }
 
     /**
@@ -65,14 +65,11 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 个人用户的配置面板
+     * 自定义http头部信息
      *
-     * @access public
-     * @param Typecho_Widget_Helper_Form $form
      * @return void
      */
-    public static function personalConfig(Form $form)
-    {
-        // todo
+    public static function header() {
+        echo '<meta name="robots" content="noindex, nofollow" />';
     }
 }
