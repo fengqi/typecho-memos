@@ -53,11 +53,11 @@ class Plugin implements PluginInterface
      */
     public static function config(Form $form)
     {
-        $openApi = new Text('open_api', NULL, NULL, _t('OpenAPI'), _t('点击个人设置，复制OpenAPI下方输入框内的完整链接。'));
+        $openApi = new Text('open_api', NULL, NULL, _t('OpenAPI'), _t('点击个人设置，复制包含OpenId的完整链接。，完整地址格式示例：https://memos.example.com/api/v1/memo?openId=12345678-1234-1234-1234-xxxxx'));
         $form->addInput($openApi);
 
-        $visibility = array("PRIVATE" => "仅自己可见", "PROTECTED" => "登录用户可见", "PUBLIC" => "所有人可见");
-        $visibility = new Radio('visibility', $visibility, "PUBLIC", _t('选择可见性'), "仅展示选择的可见性的memo。");
+        $visibillty = array("PRIVATE" => "仅自己可见", "PROTECTED" => "登录用户可见", "PUBLIC" => "所有人可见");
+        $visibility = new Radio('visibility', $visibillty, "PUBLIC", _t('选择可见性'), "仅展示选择的可见性的memo。");
         $form->addInput($visibility);
 
         $pageSize = new Text('page_size', NULL, NULL, _t('每页显示条数'), _t('建议20条为佳。'));
@@ -65,10 +65,17 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 自定义http头部信息
+     * 个人用户的配置面板
      *
+     * @access public
+     * @param Typecho_Widget_Helper_Form $form
      * @return void
      */
+    public static function personalConfig(Form $form)
+    {
+        // todo
+    }
+
     public static function header() {
         echo '<meta name="robots" content="noindex, nofollow" />';
     }

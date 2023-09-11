@@ -13,9 +13,9 @@ $page_size = intval($options->plugin('Memos')->page_size);
 $open_api = $options->plugin('Memos')->open_api;
 $visibility = $options->plugin('Memos')->visibility;
 
-if (!$open_api || !$page_size || !$visibility) exit('未配置open api');
+if (!$open_api) exit('未配置open api');
 
-$page = (!isset($_REQUEST['page']) || $_REQUEST['page'] <= 1) ? 1 : $_REQUEST['page'];
+$page = !isset($_REQUEST['page']) || $_REQUEST['page'] <= 1 ? 1 : $_REQUEST['page'];
 $limit = $page_size > 0 ? $page_size : 20;
 $prev_page = $page - 1 <= 0 ? 1 : $page - 1;
 $next_page = $page + 1;
@@ -60,14 +60,14 @@ function pickTag($content)
     return [];
 }
 
-function markdown($content)
+function markdown($content):
 {
     $tags = pickTag($content);
     foreach ($tags as $tag) {
         $content = str_replace("#$tag", "[$tag](?tag=$tag)", $content);
     }
 
-    return Markdown::convert($content);;
+    return Markdown::convert($content);
 }
 
 ?>
@@ -81,8 +81,8 @@ function markdown($content)
         </div>
     </article>
 
-    <?php foreach($content->data as $item): ?>
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <?php foreach($content as $item): ?>
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
         <ul class="post-meta">
             <li>时间: <time datetime="<?php echo date('Y-m-d H:i:s', $item->createdTs) ?>" itemprop="datePublished"><?php echo date('Y-m-d H:i:s', $item->createdTs) ?></time></li>
             <?php $tags = pickTag($item->content); ?>
@@ -103,7 +103,7 @@ function markdown($content)
         <?php else: ?>
             <li class="next">« 前一页</li>
         <?php endif; ?>
-        <?php if($content && count($content->data) == $limit): ?>
+        <?php if(count($content) == $limit): ?>
             <li class="next"><a href="<?php $this->permalink() ?>?page=<?php echo $next_page ?>">后一页 »</a></li>
         <?php else: ?>
             <li class="next">后一页 »</li>
