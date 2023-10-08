@@ -53,7 +53,10 @@ class Plugin implements PluginInterface
      */
     public static function config(Form $form)
     {
-        $openApi = new Text('open_api', NULL, NULL, _t('OpenAPI'), _t('点击个人设置，复制包含OpenId的完整链接。，完整地址格式示例：https://memos.example.com/api/v1/memo?openId=12345678-1234-1234-1234-xxxxx'));
+        $openApi = new Text('open_api', NULL, NULL, _t('Api'), _t('Api地址，示例：https://demo.usememos.com/api/v1/memo'));
+        $form->addInput($openApi);
+
+        $openApi = new Text('access_token', NULL, NULL, _t('Access Tokens'), _t('参考：https://usememos.com/docs/access-tokens'));
         $form->addInput($openApi);
 
         $visibillty = array("PRIVATE" => "仅自己可见", "PROTECTED" => "登录用户可见", "PUBLIC" => "所有人可见");

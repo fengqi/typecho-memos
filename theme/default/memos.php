@@ -11,9 +11,10 @@ use Utils\Markdown;
 $options = Typecho_Widget::widget('Widget_Options');
 $page_size = intval($options->plugin('Memos')->page_size);
 $open_api = $options->plugin('Memos')->open_api;
+$access_token = $options->plugin('Memos')->access_token;
 $visibility = $options->plugin('Memos')->visibility;
 
-if (!$open_api) exit('未配置open api');
+if (!$open_api || !$access_token) exit('未配置api地址或access token.');
 
 $page = !isset($_REQUEST['page']) || $_REQUEST['page'] <= 1 ? 1 : $_REQUEST['page'];
 $limit = $page_size > 0 ? $page_size : 20;
@@ -40,7 +41,8 @@ if (!$content) {
         'offset' => $offset,
         'tag' => '',
     ];
-    $ch = curl_init($open_api . '&' . http_build_query($data));
+    $ch = curl_init($open_api . '?' . http_build_query($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.$access_token]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
@@ -60,7 +62,7 @@ function pickTag($content)
     return [];
 }
 
-function markdown($content):
+function markdown($content)
 {
     $tags = pickTag($content);
     foreach ($tags as $tag) {
