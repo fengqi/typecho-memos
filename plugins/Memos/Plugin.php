@@ -4,7 +4,6 @@ namespace TypechoPlugin\Memos;
 
 use Typecho\Plugin\PluginInterface;
 use Typecho\Plugin\Exception;
-use Typecho\Widget\Helper\Form;
 use Typecho\Widget\Helper\Form\Element\Text;
 use Typecho\Widget\Helper\Form\Element\Radio;
 use Utils\Helper;
@@ -48,10 +47,10 @@ class Plugin implements PluginInterface
      * 获取插件配置面板
      *
      * @access public
-     * @param Form $form 配置面板
+     * @param \Typecho_Widget_Helper_Form $form 配置面板
      * @return void
      */
-    public static function config(Form $form)
+    public static function config(\Typecho_Widget_Helper_Form $form)
     {
         $openApi = new Text('open_api', NULL, NULL, _t('Api'), _t('Api地址，示例：https://demo.usememos.com/api/v1/memo'));
         $form->addInput($openApi);
@@ -74,7 +73,7 @@ class Plugin implements PluginInterface
      * @param Typecho_Widget_Helper_Form $form
      * @return void
      */
-    public static function personalConfig(Form $form)
+    public static function personalConfig(\Typecho_Widget_Helper_Form $form)
     {
         // todo
     }
